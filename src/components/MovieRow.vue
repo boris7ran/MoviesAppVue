@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  props: ["movie", "selectedMovies"],
+  props: ["movie", "selected"],
 
 /*   data() {
     return{
@@ -27,23 +27,21 @@ export default {
   methods: {
     selectMovie(){
       this.$emit('select-movie', this.movie.id);
-      this.selected = true;
     },
 
     deselectMovie(){
       this.$emit('deselect-movie', this.movie.id);
-      this.selected = false;
     }
   },
 
-  computed: {
+  /* computed: {
     selected() {
       if (this.selectedMovies.includes(this.movie.id)){
         return true;
       }
       return false;
     }
-  }
+  } */
 };
 </script>
 

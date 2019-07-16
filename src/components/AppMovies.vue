@@ -9,7 +9,7 @@
       <button @click="deselectAll">Deselect All</button>
     </div>
     <ul class="list-group" v-for="movie in filteredMovies" :key="movie.id">
-      <movie-row :movie="movie" :selectedMovies="selectedMovies" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
+      <movie-row :movie="movie" :selected="isSelected(movie.id)" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
     </ul>
     <div>
       <p v-if="filteredMovies.length === 0">No movies found</p>
@@ -58,6 +58,10 @@ export default {
 
     deselectAll() {
       this.selectedMovies = [];
+    },
+
+    isSelected(id) {
+      return  this.selectedMovies.includes(id);
     }
   },
 
