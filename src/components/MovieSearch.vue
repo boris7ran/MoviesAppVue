@@ -8,7 +8,7 @@
 export default {
   methods: {
     search(event) {
-      this.$emit('search-movie', event.target.value)
+      this.$emit('search-movie', event.target.value);
     }
   }
 }
