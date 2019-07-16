@@ -5,8 +5,14 @@
     </div>
     <div>
       <p v-if="selectedMovies.length > 0">{{ selectedMovies.length }} Movies are selected</p>
-      <button @click="selectAll">Select All</button>
-      <button @click="deselectAll">Deselect All</button>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary" @click="selectAll">Select All</button>
+        <button type="button" class="btn btn-secondary" @click="deselectAll">Deselect All</button>
+        <button type="button" class="btn btn-secondary" @click="sortByNameAsc">Name Asc</button>
+        <button type="button" class="btn btn-secondary" @click="sortByNameDesc">Name Desc</button>
+        <button type="button" class="btn btn-secondary" @click="sortByDurationAsc">Duration Asc</button>
+        <button type="button" class="btn btn-secondary" @click="sortByDurationDesc">Duration Desc</button>
+      </div>
     </div>
     <ul class="list-group" v-for="movie in filteredMovies" :key="movie.id">
       <movie-row :movie="movie" :selected="isSelected(movie.id)" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
@@ -61,7 +67,48 @@ export default {
     },
 
     isSelected(id) {
-      return  this.selectedMovies.includes(id);
+      return this.selectedMovies.includes(id);
+    },
+
+    sortByNameAsc() {
+      this.movies.sort(this.sortByName);
+    },
+
+    sortByNameDesc() {
+      this.movies.sort(this.sortByName).reverse();
+    },
+
+    sortByDurationAsc() {
+      this.movies.sort(this.sortByDuration);
+    },
+
+    sortByDurationDesc() {
+      this.movies.sort(this.sortByDuration).reverse();
+    },
+
+    sortByName(a, b) {
+      let titleA = a.title.toUpperCase();
+      let titleB = b.title.toUpperCase();
+
+      if (titleA > titleB){
+        return 1;
+      }
+      if (titleA < titleB){
+        return -1
+      }
+      
+      return 0;
+    },
+
+    sortByDuration(a, b) {
+      if (a.duration > b.duration){
+        return 1;
+      }
+      if (a.duration < b.duration){
+        return -1
+      }
+      
+      return 0;
     }
   },
 
