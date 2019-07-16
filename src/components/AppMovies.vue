@@ -6,6 +6,9 @@
     <ul v-for="movie in filteredMovies" :key="movie.id">
       <movie-row :movie="movie" />
     </ul>
+    <div>
+      <p v-if="filteredMovies.length === 0">No movies found</p>
+    </div>
   </div>
 </template>
 
