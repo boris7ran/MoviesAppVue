@@ -4,10 +4,12 @@
       <movie-search @search-movie="searchMovie" />
     </div>
     <div>
-      <p v-if="selectedMovies > 0">{{ selectedMovies }} Movies have been selected</p>
+      <p v-if="selectedMovies.length > 0">{{ selectedMovies.length }} Movies are selected</p>
+      <button @click="selectAll">Select All</button>
+      <button @click="deselectAll">Deselect All</button>
     </div>
-    <ul ul class="list-group" v-for="movie in filteredMovies" :key="movie.id">
-      <movie-row :movie="movie" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
+    <ul class="list-group" v-for="movie in filteredMovies" :key="movie.id">
+      <movie-row :movie="movie" :selectedMovies="selectedMovies" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
     </ul>
     <div>
       <p v-if="filteredMovies.length === 0">No movies found</p>
@@ -30,7 +32,7 @@ export default {
     return {
       movies: [],
       searchTerm: "",
-      selectedMovies: 0
+      selectedMovies: []
     };
   },
 
@@ -39,12 +41,23 @@ export default {
       this.searchTerm = search;
     },
 
-    selectMovie() {
-      this.selectedMovies++;
+    selectMovie(id) {
+      this.selectedMovies.push(id);
     },
 
-    deselectMovie() {
-      this.selectedMovies--;
+    deselectMovie(id) {
+      this.selectedMovies = this.selectedMovies.filter(el => el !== id);
+    },
+
+    selectAll() {
+      this.selectedMovies = [];
+      this.filteredMovies.forEach(movie => {
+        this.selectedMovies.push(movie.id);
+      })
+    },
+
+    deselectAll() {
+      this.selectedMovies = [];
     }
   },
 

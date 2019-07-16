@@ -16,23 +16,32 @@
 
 <script>
 export default {
-  props: ["movie"],
+  props: ["movie", "selectedMovies"],
 
-  data() {
+/*   data() {
     return{
       selected: false
     }
-  },
+  }, */
 
   methods: {
     selectMovie(){
-      this.$emit('select-movie');
+      this.$emit('select-movie', this.movie.id);
       this.selected = true;
     },
 
     deselectMovie(){
-      this.$emit('deselect-movie');
+      this.$emit('deselect-movie', this.movie.id);
       this.selected = false;
+    }
+  },
+
+  computed: {
+    selected() {
+      if (this.selectedMovies.includes(this.movie.id)){
+        return true;
+      }
+      return false;
     }
   }
 };
