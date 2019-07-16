@@ -14,12 +14,23 @@
         <button type="button" class="btn btn-secondary" @click="sortByDurationDesc">Duration Desc</button>
       </div>
     </div>
-    <ul class="list-group" v-for="movie in filteredMovies" :key="movie.id">
-      <movie-row :movie="movie" :selected="isSelected(movie.id)" @select-movie="selectMovie" @deselect-movie="deselectMovie" />
-    </ul>
+    <paginate name="movies" :list="filteredMovies" :per="5">
+      <ul class="list-group" v-for="movie in paginated('movies')" :key="movie.id">
+        <movie-row
+          :movie="movie"
+          :selected="isSelected(movie.id)"
+          @select-movie="selectMovie"
+          @deselect-movie="deselectMovie"
+        />
+      </ul>
+    </paginate>
     <div>
       <p v-if="filteredMovies.length === 0">No movies found</p>
     </div>
+    <paginate-links for="movies" :simple="{
+    prev: 'Back',
+    next: 'Next'
+  }"></paginate-links>
   </div>
 </template>
 
@@ -38,7 +49,8 @@ export default {
     return {
       movies: [],
       searchTerm: "",
-      selectedMovies: []
+      selectedMovies: [],
+      paginate: ["movies"]
     };
   },
 
@@ -59,7 +71,7 @@ export default {
       this.selectedMovies = [];
       this.filteredMovies.forEach(movie => {
         this.selectedMovies.push(movie.id);
-      })
+      });
     },
 
     deselectAll() {
@@ -90,24 +102,24 @@ export default {
       let titleA = a.title.toUpperCase();
       let titleB = b.title.toUpperCase();
 
-      if (titleA > titleB){
+      if (titleA > titleB) {
         return 1;
       }
-      if (titleA < titleB){
-        return -1
+      if (titleA < titleB) {
+        return -1;
       }
-      
+
       return 0;
     },
 
     sortByDuration(a, b) {
-      if (a.duration > b.duration){
+      if (a.duration > b.duration) {
         return 1;
       }
-      if (a.duration < b.duration){
-        return -1
+      if (a.duration < b.duration) {
+        return -1;
       }
-      
+
       return 0;
     }
   },
@@ -136,4 +148,65 @@ export default {
 </script>
 
 <style>
+#app {
+ font-family: 'Avenir', Helvetica, Arial, sans-serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ font-size: 20px;
+ text-align: center;
+ color: #2c3e50;
+ margin-top: 60px;
+}
+
+h1,
+h2 {
+ font-weight: normal;
+}
+
+ul {
+ list-style-type: none;
+ padding: 0;
+}
+
+li {
+ display: inline-block;
+ margin: 0 10px;
+}
+
+.paginate-list {
+ width: 159px;
+ margin: 0 auto;
+ text-align: left;
+ li {
+   display: block;
+   &:before {
+     content: '⚬ ';
+     font-weight: bold;
+     color: slategray;
+   }
+ }
+}
+
+.paginate-links.items {
+ user-select: none;
+ a {
+   cursor: pointer;
+ }
+ li.active a {
+   font-weight: bold;
+ }
+ li.next:before {
+   content: ' | ';
+   margin-right: 13px;
+   color: #ddd;
+ }
+ li.disabled a {
+   color: #ccc;
+   cursor: no-drop;
+ }
+}
+
+a {
+ color: #42b983;
+}
 </style>
